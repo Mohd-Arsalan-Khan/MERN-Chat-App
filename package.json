@@ -1,0 +1,18 @@
+{
+  "name": "mern-chat-app",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000M\u0000E\u0000R\u0000N\u0000-\u0000C\u0000h\u0000a\u0000t\u0000-\u0000A\u0000p\u0000p\u0000\r\u0000 \u0000",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev" : "nodemon api/index.js",
+    "start": "node api/index.js"
+  },
+  "author": "Mohd Arsalan Khan",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9"
+  }
+}

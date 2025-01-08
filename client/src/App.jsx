@@ -7,14 +7,14 @@ import ChatPage from './pages/ChatPage'
 function App() {
 
   return (
-    <>
+    <div className='App'>
       <BrowserRouter>
       <Routes>
         <Route path='/' Component={HomePage}/>
         <Route path='/chats' Component={ChatPage}/>
       </Routes>
       </BrowserRouter>
-    </>
+    </div>
   )
 }
 

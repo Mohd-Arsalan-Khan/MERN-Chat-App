@@ -10,7 +10,7 @@ app.use(cookieParser())
 
 import userRouter from "./routes/user.route.js"
 
-app.use("/api/v1/", userRouter)
+app.use("/api/v1/register", userRouter)
 
 
 app.use(notFound)

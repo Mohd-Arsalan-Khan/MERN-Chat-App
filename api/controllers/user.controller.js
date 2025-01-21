@@ -45,7 +45,7 @@ const registerUser = expressAsyncHandler(async(req, res) =>{
         throw new Error(400, "Something went wrong try again")
     }
 
-    res.status(200).cookie("access_token", Token, options).json(rest)
+    res.status(200).cookie("jwt_token", Token, options).json(rest)
 })
 
 const loginUser = expressAsyncHandler(async(req, res) =>{
@@ -75,12 +75,23 @@ const loginUser = expressAsyncHandler(async(req, res) =>{
         httpOnly: true,
     }
 
-    res.status(200).cookie("access_token", Token, options).json(rest)
-    
+    res.status(200).cookie("jwt_token", Token, options).json(rest)
+})
 
+const getUsers = expressAsyncHandler(async(req,res) =>{
+    const keyword = req.query.search ? {
+        $or:[
+            {name:{$regex: req.query.search, $options:"i"}},
+            {email:{$regex: req.query.search, $options:"i"}}
+        ]
+    } :{}
+
+    const users = await User.find(keyword).find({_id:{$ne: req.user._id}}).select('-password')
+    res.status(200).json(users)
 })
 
 export{
     registerUser,
-    loginUser
+    loginUser,
+    getUsers
 }

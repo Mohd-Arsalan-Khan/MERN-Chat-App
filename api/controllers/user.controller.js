@@ -17,13 +17,13 @@ const registerUser = expressAsyncHandler(async(req, res) =>{
     const {name, email, password, picture} = req.body
 
     if (!name || !email || !password) {
-        throw new Error(400, "All field are required")
+        throw new Error("All field are required")
     }
 
     const userExist = await User.findOne({email})
 
     if (userExist) {
-        throw new Error(404, "User already exsist")
+        throw new Error("User already exsist")
     }
 
     const newUser = await User.create({
@@ -42,7 +42,7 @@ const registerUser = expressAsyncHandler(async(req, res) =>{
     }
 
     if (!newUser) {
-        throw new Error(400, "Something went wrong try again")
+        throw new Error("Something went wrong try again")
     }
 
     res.status(200).cookie("jwt_token", Token, options).json(rest)
@@ -52,19 +52,19 @@ const loginUser = expressAsyncHandler(async(req, res) =>{
     const {email, password} = req.body
 
     if (!email || !password) {
-        throw new Error(400, "All field are required")
+        throw new Error("All field are required")
     }
 
     const user = await User.findOne({$or:[{email},{password}]})
 
     if (!user) {
-        throw new Error(404,"user not found")
+        throw new Error("user not found")
     }
   
     const isPasswordValid = await user.isPasswordCorrect(password)
 
     if (!isPasswordValid) {
-        throw new Error(404, "password is incorrect")
+        throw new Error("password is incorrect")
     }
 
     const {Token} = await generateToken(user._id)

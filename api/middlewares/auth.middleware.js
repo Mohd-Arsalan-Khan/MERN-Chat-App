@@ -16,7 +16,7 @@ export const verifyJWT = expressAsyncHandler(async(req,res,next) =>{
         if (!user) {
             throw new Error(401,"invalid user")
         }
-       req.user = user
+        req.user = user
         next()
     }catch{
         throw new Error(401, "invalid token")

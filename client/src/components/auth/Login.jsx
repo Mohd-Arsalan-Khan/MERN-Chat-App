@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom'
 
 function Login() {
       const [show, setShow] = useState(false)
-      const [email, setEmail] = useState()
-      const [password, setPassword] = useState()
+      const [email, setEmail] = useState("")
+      const [password, setPassword] = useState("")
       const [loading, setLoading] = useState()
       const toast = useToast()
       const navigate = useNavigate()
@@ -28,7 +28,7 @@ function Login() {
         }
 
         try {
-          const {data} = await axios.post("/api/v1/register/login",
+          const {data} = await axios.post("/api/v1/user/login",
           {email, password},
           {headers : {"Content-Type": "Application/json"}})
           toast({
@@ -56,14 +56,14 @@ function Login() {
   
     return (
       <VStack spacing='5px'>
-          <FormControl id='email' isRequired>
+          <FormControl id='login email' isRequired>
               <FormLabel>Email</FormLabel>
               <Input type='email' placeholder='Enter Your Email'
               value={email}
                   onChange={(e) => setEmail(e.target.value)}
               />
           </FormControl>
-          <FormControl id='password' isRequired>
+          <FormControl id='login password' isRequired>
               <FormLabel>Password</FormLabel>
               <InputGroup> 
               <Input type={show ? "text" : "password"} placeholder='Enter Your Password'

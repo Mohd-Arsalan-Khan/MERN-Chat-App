@@ -1,12 +1,22 @@
 import React from 'react'
 import axios from 'axios'
+import { chatState } from '../context/chatProvider'
+import { Box } from '@chakra-ui/react'
+import ChatBox from '../components/miscellaneous/ChatBox'
+import SideBar from '../components/miscellaneous/sideBar'
+import MyChat from '../components/miscellaneous/MyChat'
 
 function ChatPage() {
-    const fetchChats = async() =>{
-        const data = await axios.get('')
-    }
+  const {user} = chatState()
+
   return (
-    <div>ChatPage</div>
+    <div style={{width: "100%"}}>
+      {user && <SideBar/>}
+      <Box display="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
+        {user && <MyChat/>}
+        {user && <ChatBox/>}
+      </Box>
+    </div>
   )
 }
 

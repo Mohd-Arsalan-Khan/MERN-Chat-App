@@ -45,7 +45,7 @@ const registerUser = expressAsyncHandler(async(req, res) =>{
         throw new Error("Something went wrong try again")
     }
 
-    res.status(200).cookie("jwt_token", Token, options).json(rest)
+    res.status(200).json(rest)
 })
 
 const loginUser = expressAsyncHandler(async(req, res) =>{
@@ -69,13 +69,10 @@ const loginUser = expressAsyncHandler(async(req, res) =>{
 
     const {Token} = await generateToken(user._id)
 
+
     const {password: pass, ...rest} = user._doc;
 
-    const options ={
-        httpOnly: true,
-    }
-
-    res.status(200).cookie("jwt_token", Token, options).json(rest)
+    res.status(200).json({ ...rest, token: Token })
 })
 
 const getUsers = expressAsyncHandler(async(req,res) =>{

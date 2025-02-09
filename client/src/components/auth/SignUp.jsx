@@ -86,7 +86,7 @@ function SignUp() {
         }
 
         try {
-           const {data} = await axios.post("/api/v1/register",
+           const {data} = await axios.post("/api/v1/user",
             {name, email, password, picture},
             {headers : {"Content-Type": "Application/json"}})
 

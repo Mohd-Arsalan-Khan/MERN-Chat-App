@@ -27,7 +27,7 @@ const accessChat = expressAsyncHandler(async(req,res) =>{
       if (isChat.length > 0) {
         return res.status(200).json(isChat[0]);
       }else{
-      const chatData = {
+      var chatData = {
         chatName: "sender",
         isGroupChat: false,
         users: [req.user._id , userId],

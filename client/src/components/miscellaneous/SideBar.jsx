@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react'
+import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react'
 import {BellIcon, ChevronDownIcon} from "@chakra-ui/icons"
 import React, { useState } from 'react'
 import { chatState } from '../../context/chatProvider'
@@ -16,7 +16,7 @@ const SideBar = () => {
   const [loadingChat, setLoadingChat] = useState()
   const navigate = useNavigate()
 
-  const {user} = chatState()
+  const {user, setSelectedChat, chats, setChats} = chatState()
   const toast = useToast()
 
   const logoutHandler = () =>{
@@ -45,9 +45,6 @@ const SideBar = () => {
     
       setLoading(false)
       setSearchResult(data)
-  
-      setSearchResult(data);
-      setLoading(false);
 
     } catch (error) {
       toast({
@@ -61,8 +58,29 @@ const SideBar = () => {
     }
   }
 
-  const accessChat = (userId) =>{
+  const accessChat = async(userId) =>{
+    try {
+      setLoadingChat(true)
+      const {data} = await axios.post("/api/v1/chat", {userId},
+        {headers : {"Content-type":"application/json",Authorization: `Bearer ${user.token}`}}
+      )
 
+      if(!chats.find((c) => c._id === data._id)) setChats([data, ...chats])
+
+      setSelectedChat(data);
+      setLoadingChat(false);
+      onClose()
+      
+    } catch (error) {
+      toast({
+        title: "Error fetching the data",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left"
+      })
+    }
   }
 
   return (
@@ -121,6 +139,7 @@ const SideBar = () => {
               />
             ))
           )}
+          {loadingChat && <Spinner display="flex" />}
         </DrawerBody>
         </DrawerContent>
       </Drawer>

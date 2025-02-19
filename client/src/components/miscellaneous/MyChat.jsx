@@ -7,7 +7,7 @@ import ChatLoading from '../ChatLoading'
 import { getSender } from '../../config/ChatLogics'
 import GroupChatModal from './GroupChatModal'
 
-const MyChat = () => {
+const MyChat = ({fetchAgain}) => {
   const [loggedUser, setLoggedUser] = useState()
   const {selectedChat, setSelectedChat, user, chats, setChats} = chatState()
 
@@ -18,6 +18,7 @@ const MyChat = () => {
       const {data} = await axios.get("/api/v1/chat", 
         {headers: {Authorization: `Bearer ${user.token}`}}
       )
+
 
       setChats(data)
     } catch (error) {
@@ -32,9 +33,11 @@ const MyChat = () => {
     }
   }
   useEffect(()=>{
-    setLoggedUser(JSON.parse(localStorage.getItem("userInfo")))
-    fetchChats()
-  },[])
+  setLoggedUser(JSON.parse(localStorage.getItem("userInfo")))
+  fetchChats()
+  },[fetchAgain])
+
+  
   return (
     <Box
       display={{base: selectedChat ? "none" : "flex", md:"flex"}}
@@ -88,7 +91,7 @@ const MyChat = () => {
               key={chat._id}
               >
                 <Text>
-                  {!chat.isGroupChat?getSender(loggedUser, chat.users): chat.chatName}
+                {!chat.isGroupChat? (loggedUser && chat.users ? getSender(loggedUser, chat.users) : "Loading..."): chat.chatName}
                 </Text>
               </Box>
             ))}

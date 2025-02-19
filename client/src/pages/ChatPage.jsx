@@ -7,14 +7,14 @@ import SideBar from '../components/miscellaneous/sideBar'
 import MyChat from '../components/miscellaneous/MyChat'
 
 function ChatPage() {
-  const {user} = chatState()
+  const {user,fetchAgain, setFetchAgain} = chatState()
 
   return (
     <div style={{width: "100%"}}>
       {user && <SideBar/>}
       <Box display="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
-        {user && <MyChat/>}
-        {user && <ChatBox/>}
+        {user && <MyChat fetchAgain={fetchAgain} />}
+        {user && <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain}/>}
       </Box>
     </div>
   )

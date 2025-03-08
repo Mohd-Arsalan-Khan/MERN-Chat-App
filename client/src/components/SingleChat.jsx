@@ -7,6 +7,10 @@ import ProfileModal from './miscellaneous/ProfileModal'
 import UpdateGroupChatModal from './miscellaneous/UpdateGroupChatModal'
 import axios from 'axios'
 import ScrollableChat from './ScrollableChat'
+import io from "socket.io-client"
+
+const ENDPOINT = "http://localhost:3000"
+var socket, sekectedChatCompare
 
 const SingleChat = ({fetchAgain, setFetchAgain}) => {
 
@@ -28,8 +32,6 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
         const {data} = await axios.get(`/api/v1/message/${selectedChat._id}`,{
           headers:{Authorization:`Bearer ${user.token}`}
         })
-
-        console.log(messages)
         setMessages(data)
         setLoading(false)
       } catch (error) {
@@ -73,6 +75,13 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
         }
       }
     }
+
+    useEffect(()=>{
+      socket = io(ENDPOINT, {transports: ["websocket", "polling"]})
+      return () => {
+        socket.disconnect();
+      };
+    },[])
     const typingHandler = (e) =>{
       setNewMessages(e.target.value)
     }

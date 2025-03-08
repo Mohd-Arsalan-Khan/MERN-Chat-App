@@ -16,7 +16,7 @@ function Login() {
       const handleSubmit = async() => {
         setLoading(true)
         if (!email || !password) {
-          toasttoast({
+          toast({
             title: "Enter all the field",
             status: "warning",
             duration: 5000,

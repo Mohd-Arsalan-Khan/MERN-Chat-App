@@ -8,16 +8,29 @@ import UpdateGroupChatModal from './miscellaneous/UpdateGroupChatModal'
 import axios from 'axios'
 import ScrollableChat from './ScrollableChat'
 import io from "socket.io-client"
+import Lottie from "react-lottie"
+import animationData from "../animations/typing.json"
 
 const ENDPOINT = "http://localhost:3000"
-var socket, sekectedChatCompare
+var socket, selectedChatCompare
 
 const SingleChat = ({fetchAgain, setFetchAgain}) => {
 
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
   const [newMessage, setNewMessages] = useState("")
+  const [socketConnected, setSocketConnected] = useState(false)
+  const [typing, setTyping] = useState(false)
+  const [isTyping, setIsTyping] = useState(false)
 
+  const defaultOptions ={
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    renderSettings:{
+      preserverAspectRatio: "xMidYMid slice"
+    }
+  }
   const toast = useToast()
 
     const{user, selectedChat, setSelectedChat} = chatState()
@@ -34,6 +47,8 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
         })
         setMessages(data)
         setLoading(false)
+
+        socket.emit("join chat", selectedChat._id)
       } catch (error) {
         toast({
           title: "Error Occured",
@@ -46,8 +61,31 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
       }
     }
     useEffect(()=>{
+      socket = io(ENDPOINT, {transports: ["websocket", "polling"]})
+      socket.emit("setup", user)
+      socket.on("connected", () => setSocketConnected(true))
+      socket.on("typing", () => setIsTyping(true))
+      socket.on("stop typing", () => setIsTyping(false))
+      // return () => {
+      //   socket.disconnect();
+      // };
+  
+    },[])
+
+    useEffect(()=>{
       fetchMessages()
+      selectedChatCompare = selectedChat;
     },[selectedChat])
+
+    useEffect(() =>{
+      socket.on("message recieved", (newMessageRec) =>{
+        if (!selectedChatCompare || selectedChatCompare._id !== newMessageRec.chat._id ) {
+          //get notification
+        }else{
+          setMessages([...messages, newMessageRec])
+        }
+      })
+    })
 
     const sendMessage = async(event) =>{
       if (event.key === "Enter" && newMessage) {
@@ -61,7 +99,10 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
             "Content-Type":"application/json",
             Authorization: `Bearer ${user.token}`}}
           )
-          console.log(data)
+         
+          if (socketConnected) {
+            socket.emit("new message", data)
+          }
           setMessages([...messages, data])
         } catch (error) {
           toast({
@@ -76,14 +117,28 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
       }
     }
 
-    useEffect(()=>{
-      socket = io(ENDPOINT, {transports: ["websocket", "polling"]})
-      return () => {
-        socket.disconnect();
-      };
-    },[])
     const typingHandler = (e) =>{
       setNewMessages(e.target.value)
+
+      if (!socketConnected) {
+        return
+      }
+
+      if (!typing) {
+        setTyping(true)
+        socket.emit("typing", selectedChat._id)
+      }
+      const lastTypingTime = new Date().getTime()
+
+      setTimeout(()=>{
+        const timeNow = new Date().getTime()
+        const timeDiff = timeNow - lastTypingTime
+
+        if (timeDiff >= 3000 && typing) {
+          socket.emit("stop typing", selectedChat._id)
+          setTyping(false)
+        }
+      }, 3000)
     }
 
   return (
@@ -120,6 +175,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
         <ScrollableChat messages={messages}/>
       </div>)}
       <FormControl display="flex" alignItems="center" isRequired marginTop={3}>
+      {isTyping ? <div><Lottie options={defaultOptions} width={70} style={{marginBottom: 5, marginLeft: 0}}/></div> : <></>}
       <Input
         variant="Filled"
         background="#E0E0E0"

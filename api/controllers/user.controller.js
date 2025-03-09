@@ -7,7 +7,6 @@ const generateToken = async(newUserId) =>{
         const Token = user.generateJwtToken()
 
         await user.save({validateBeforeSave: false})
-        console.log("Generated Token:", Token);
         return{Token}
     } catch (error) {
         console.log(error)

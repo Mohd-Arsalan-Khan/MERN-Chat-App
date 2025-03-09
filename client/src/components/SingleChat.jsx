@@ -80,9 +80,9 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
     useEffect(() =>{
       socket.on("message recieved", (newMessageRec) =>{
         if (!selectedChatCompare || selectedChatCompare._id !== newMessageRec.chat._id ) {
-          if (!notification.includes(newMessageRec)) {
-            setNotification([newMessageRec,...notification])
-            setFetchAgain(!fetchAgain)
+          if (!notification.some(n => n._id === newMessageRec._id)) {  
+            setNotification([newMessageRec, ...notification]);
+            setFetchAgain(!fetchAgain);
           }
         }else{
           setMessages([...messages, newMessageRec])

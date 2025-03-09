@@ -97,7 +97,7 @@ function SignUp() {
             isClosable: true,
             position: "bottom"
            })
-           localStorage.removeItem("chats");
+           localStorage.clear();  
            localStorage.setItem("userInfo", JSON.stringify(data))
            setLoading(false)
            navigate("/chats")

@@ -19,7 +19,11 @@ const ChatProvider = ({children}) =>{
         if (userInfo) {
             setUser(userInfo)
         }else{
-            navigate("/")
+            setUser(null);
+            setSelectedChat(null);
+            setChats([]);
+            setNotification([]);
+            navigate("/");
         }
     },[navigate])
 

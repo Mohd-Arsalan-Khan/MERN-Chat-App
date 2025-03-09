@@ -106,6 +106,8 @@ const GroupChatModal = ({children}) => {
             return
         }
         setSelectedUsers([...selectedUsers, userToAdd])
+        setsearch("")
+        setSearchResult([])
     }
 
     const handleDelete = (deleteUser) =>{
@@ -126,14 +128,14 @@ const GroupChatModal = ({children}) => {
                     <Input placeholder='Chat Name' marginBottom={3} onChange={(e) => setgroupChatName(e.target.value)}/>
                 </FormControl>
                 <FormControl>
-                    <Input placeholder='Select Name' marginBottom={1} onChange={(e) => handleSearch(e.target.value)}/>
+                    <Input placeholder='Select Name' marginBottom={1} value={search} onChange={(e) => handleSearch(e.target.value)}/>
                 </FormControl>
                 <Box width="100%" display="flex" flexWrap="wrap"> 
                 {selectedUsers.map(u=>(
-                    <UserBadgeItem key={user._id} user={u} handleFunction={()=>handleDelete(u)} />
+                    <UserBadgeItem key={u._id} user={u} handleFunction={()=>handleDelete(u)} />
                 ))}</Box>
                 {loading?<div>loading</div>:(
-                    searchResult?.slice(0,4).map(user =>(<UserListItem key={users._id} user={user} handleFunction={() => handleGroupChat(user)}/>))
+                    searchResult?.slice(0,4).map(user =>(<UserListItem key={user._id} user={user} handleFunction={() => handleGroupChat(user)}/>))
                 )}
               </ModalBody>
     

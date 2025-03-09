@@ -118,11 +118,12 @@ const SideBar = () => {
         </MenuButton>
             <MenuList paddingLeft={2}>
               {!notification.length && "no new messages"}
-              {notification.map(notif =>(
-                <MenuItem key={notif._id} onClick={() =>{setSelectedChat(notif.chat)
-                  setNotification(notification.filter((n) => n !== notif))
-                }}>
-                  {notif.chat.isGroupChat ? `new message from ${notif.chat.chatName}`:`new message from ${getSender(user, notif.chat.users)}`}
+              {notification.map((notif, index) => (
+              <MenuItem key={index} onClick={() => {
+              setSelectedChat(notif.chat);
+              setNotification(prevNotifications => prevNotifications.filter(n => n._id !== notif._id)); // Ensure only one instance is removed
+              }}>
+                  {notif.chat.isGroupChat ? `new message in ${notif.chat.chatName}`:`new message in ${getSender(user, notif.chat.users)}`}
                 </MenuItem>
               ))}
             </MenuList>

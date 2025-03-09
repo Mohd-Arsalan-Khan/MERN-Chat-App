@@ -22,6 +22,14 @@ const ChatProvider = ({children}) =>{
             navigate("/")
         }
     },[navigate])
+
+    useEffect(() => {
+        if (!user) {
+            setSelectedChat(null);
+            setChats([]);
+            setNotification([]);
+        }
+    }, [user]);
     return(
         <chatContext.Provider value={{user, setUser, selectedChat, setSelectedChat, chats, setChats, fetchAgain, setFetchAgain, notification, setNotification}}>
             {children}

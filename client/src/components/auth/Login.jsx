@@ -39,6 +39,8 @@ function Login() {
             position: "bottom"
            })
            localStorage.removeItem("chats");
+           localStorage.removeItem("messages");
+           localStorage.removeItem("userInfo");
            localStorage.setItem("userInfo", JSON.stringify(data))
            setLoading(false)
            navigate("/chats")

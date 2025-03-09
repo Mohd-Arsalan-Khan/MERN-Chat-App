@@ -89,6 +89,13 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
         }
       })
     })
+    useEffect(() => {
+      if (selectedChat) {
+        setNotification((prevNotifications) =>
+          prevNotifications.filter((notif) => notif.chat._id !== selectedChat._id)
+        );
+      }
+    }, [selectedChat, setNotification]); 
 
     const sendMessage = async(event) =>{
       if (event.key === "Enter" && newMessage) {

@@ -84,7 +84,8 @@ const getUsers = expressAsyncHandler(async(req,res) =>{
     } :{}
 
     const users = await User.find(keyword).find({_id:{$ne: req.user._id}}).select('-password')
-    res.status(200).json(users)
+    const filteredUsers = users.filter(user => user._id.toString() !== req.user._id.toString());
+    res.status(200).json(filteredUsers)
 })
 
 export{

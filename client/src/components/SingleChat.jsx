@@ -78,6 +78,8 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
     },[selectedChat])
 
     useEffect(() =>{
+      socket.off("message recieved");
+      
       socket.on("message recieved", (newMessageRec) =>{
         if (!selectedChatCompare || selectedChatCompare._id !== newMessageRec.chat._id ) {
           setNotification((prevNotifications) => {
@@ -89,8 +91,12 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
         });
         setFetchAgain((prev) => !prev);
         }else{
-          // setMessages([...messages, newMessageRec])
-          setMessages((prev) => [...prev, newMessageRec]);
+          setMessages((prevMessages) => {
+            if (prevMessages.some((msg) => msg._id === newMessageRec._id)) {
+              return prevMessages; // Prevent adding duplicate messages
+            }
+            return [...prevMessages, newMessageRec];
+          });
         }
       })
     })

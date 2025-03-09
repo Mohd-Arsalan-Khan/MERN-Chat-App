@@ -16,7 +16,7 @@ const server = app.listen(PORT, console.log(`server is running on port ${PORT}`)
 const io = new Server(server, {
     pingTimeout: 60000,
     cors:{
-        origin: "http://localhost:5173",
+        origin: ["http://localhost:5173", "https://mern-chat-app-ijx7.onrender.com"],
         methods: ["GET", "POST"],  
         credentials: true
     }
@@ -53,6 +53,10 @@ io.on("connection", (socket) =>{
             socket.in(user._id).emit("message recieved", newMessageRec)
         })
     })
+
+    socket.on("disconnect", () => {
+        console.log("User disconnected");
+    });
 
     socket.off("setup", () => {
         console.log(`Client disconnected`);

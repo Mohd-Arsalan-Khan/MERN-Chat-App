@@ -33,7 +33,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
   }
   const toast = useToast()
 
-    const{user, selectedChat, setSelectedChat} = chatState()
+    const{user, selectedChat, setSelectedChat, notification, setNotification} = chatState()
 
     const fetchMessages = async() =>{
       if (!selectedChat) {
@@ -80,7 +80,10 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
     useEffect(() =>{
       socket.on("message recieved", (newMessageRec) =>{
         if (!selectedChatCompare || selectedChatCompare._id !== newMessageRec.chat._id ) {
-          //get notification
+          if (!notification.includes(newMessageRec)) {
+            setNotification([newMessageRec,...notification])
+            setFetchAgain(!fetchAgain)
+          }
         }else{
           setMessages([...messages, newMessageRec])
         }

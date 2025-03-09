@@ -31,7 +31,6 @@ function Login() {
           const {data} = await axios.post("/api/v1/user/login",
           {email, password},
           {headers : {"Content-Type": "Application/json"}})
-          console.log("Login Response:", data);
           toast({
             title: "Login Successful",
             status: "success",

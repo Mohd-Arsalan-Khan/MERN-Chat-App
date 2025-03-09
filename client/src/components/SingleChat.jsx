@@ -46,6 +46,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
           headers:{Authorization:`Bearer ${user.token}`}
         })
         setMessages(data)
+        
         setLoading(false)
 
         socket.emit("join chat", selectedChat._id)
@@ -184,7 +185,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
         </>)}
     </Text>
     <Box display="flex" flexDirection="column" justifyContent="flex-end" padding={3} backgroundColor="#E8E8E8" width="100%"
-    height="100%" borderRadius="lg" overflowY="hidden"
+    height="100%" borderRadius="lg" overflowY="auto" maxHeight="500px"
     >
       {loading ? (<Spinner
       size="xl"

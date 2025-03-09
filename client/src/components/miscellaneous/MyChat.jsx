@@ -86,7 +86,8 @@ const MyChat = ({fetchAgain}) => {
       width="100%"
       height="100%"
       borderRadius="lg"
-      overflow="hidden"
+      overflow="auto"
+      maxHeight="80vh"
       >
         {chats ? (
           <Stack overflowY="scroll">

@@ -3,7 +3,7 @@ import axios from 'axios'
 import { chatState } from '../context/chatProvider'
 import { Box } from '@chakra-ui/react'
 import ChatBox from '../components/miscellaneous/ChatBox'
-import SideBar from '../components/miscellaneous/sideBar'
+import SideBar from '../components/miscellaneous/SideBar'
 import MyChat from '../components/miscellaneous/MyChat'
 
 function ChatPage() {

@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react'
+import {Badge, Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react'
 import {BellIcon, ChevronDownIcon} from "@chakra-ui/icons"
 import React, { useState } from 'react'
 import { chatState } from '../../context/chatProvider'
@@ -8,8 +8,6 @@ import ChatLoading from '../ChatLoading'
 import UserListItem from '../userAvatar/UserListItem'
 import axios from 'axios'
 import { getSender } from '../../config/ChatLogics'
-import NotificationBadge from "react-notification-badge";
-import { Effect } from "react-notification-badge";
 
 
 
@@ -102,13 +100,22 @@ const SideBar = () => {
         <Text fontSize="2xl" fontFamily="Work sans">Let's Talk</Text>
         <div>
           <Menu>
-            <MenuButton p={1}>
-              <NotificationBadge
-              count={notification.length}
-              effect={Effect.scale}
-              />
-              <BellIcon fontSize="2xl" m={1}/>
-            </MenuButton>
+          <MenuButton p={1} position="relative">
+          <BellIcon fontSize="2xl" m={1} />
+          {notification.length > 0 && (
+            <Badge
+              colorScheme="red"
+              borderRadius="full"
+              px={2}
+              fontSize="0.8em"
+              position="absolute"
+              top="-3px"
+              right="-3px"
+            >
+              {notification.length}
+            </Badge>
+          )}
+        </MenuButton>
             <MenuList paddingLeft={2}>
               {!notification.length && "no new messages"}
               {notification.map(notif =>(

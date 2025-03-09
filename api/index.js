@@ -19,7 +19,8 @@ const io = new Server(server, {
         origin: ["http://localhost:5173", "https://mern-chat-app-ijx7.onrender.com"],
         methods: ["GET", "POST"],  
         credentials: true
-    }
+    },
+    transports: ["websocket", "polling"]
 })
 
 io.on("connection", (socket) =>{

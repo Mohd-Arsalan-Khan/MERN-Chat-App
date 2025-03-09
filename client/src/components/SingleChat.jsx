@@ -81,11 +81,14 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
       socket.on("message recieved", (newMessageRec) =>{
         if (!selectedChatCompare || selectedChatCompare._id !== newMessageRec.chat._id ) {
           if (!notification.some(n => n._id === newMessageRec._id)) {  
-            setNotification([newMessageRec, ...notification]);
-            setFetchAgain(!fetchAgain);
+            // setNotification([newMessageRec, ...notification]);
+            // setFetchAgain(!fetchAgain);
+            setNotification((prev) => [newMessageRec, ...prev]);
+            setFetchAgain((prev) => !prev);
           }
         }else{
-          setMessages([...messages, newMessageRec])
+          // setMessages([...messages, newMessageRec])
+          setMessages((prev) => [...prev, newMessageRec]);
         }
       })
     })

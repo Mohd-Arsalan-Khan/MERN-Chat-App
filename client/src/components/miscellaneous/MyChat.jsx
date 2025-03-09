@@ -14,6 +14,17 @@ const MyChat = ({fetchAgain}) => {
   const toast = useToast()
 
   const fetchChats = async() =>{
+    if (!user?.token) {
+      toast({
+        title: "Authentication Error",
+        description: "No token found, please log in again.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+      return;
+    }
     try {
       const {data} = await axios.get("/api/v1/chat", 
         {headers: {Authorization: `Bearer ${user.token}`}}

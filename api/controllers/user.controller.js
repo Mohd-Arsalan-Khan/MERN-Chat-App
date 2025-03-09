@@ -7,6 +7,7 @@ const generateToken = async(newUserId) =>{
         const Token = user.generateJwtToken()
 
         await user.save({validateBeforeSave: false})
+        console.log("Generated Token:", Token);
         return{Token}
     } catch (error) {
         console.log(error)
@@ -45,7 +46,7 @@ const registerUser = expressAsyncHandler(async(req, res) =>{
         throw new Error("Something went wrong try again")
     }
 
-    res.status(200).json(rest)
+    res.status(200).json({...rest, token: Token})
 })
 
 const loginUser = expressAsyncHandler(async(req, res) =>{

@@ -1,6 +1,7 @@
 import express from "express"
 import cookieParser from "cookie-parser"
 import {notFound, errorHandler} from "./middlewares/error.middleware.js"
+import path from "path"
 
 const __dirname = path.resolve()
 
